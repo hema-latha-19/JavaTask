@@ -1,0 +1,31 @@
+package practiceproblems;
+import java.util.Scanner;
+public class AAPPLLLLEE {
+
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		String str=s.nextLine();
+		String[] ch=str.split(":");
+		for(int i=0;i<ch.length;i++)
+		{
+			System.out.print(ch[i]+" ");
+		}
+		System.out.println();
+		String res="";
+		for(int i=0;i<ch.length;i++)
+		{
+			if(ch[i].charAt(0)==ch[i].charAt(1))
+			{
+				res=res+ ch[i].charAt(0);
+			}
+			if(ch[i].charAt(0)!=ch[i].charAt(1))
+			{
+				int a=(int)ch[i].charAt(0);
+				int b=(int)ch[i].charAt(1);
+				int diff=Math.abs(a-b);
+				res=res+(char)(97+diff-1);
+			}
+		}
+		System.out.println(res.toUpperCase());
+	}
+}

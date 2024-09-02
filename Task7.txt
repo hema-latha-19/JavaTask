@@ -1,0 +1,88 @@
+package practiceproblems;
+import java.util.Scanner;
+interface LibraryUser
+{
+	void registerAccount();
+	void requestBook();
+}
+class KidUsers implements LibraryUser
+{
+	int age;
+	String bookType;
+	KidUsers(int age,String bookType)
+	{
+		this.age=age;
+		this.bookType=bookType;
+	}
+	public void registerAccount()
+	{
+		if(age<=12)
+		{
+			System.out.println("You have successfully registered under a kids Account");
+		}
+		else
+		{
+			System.out.println("Sorry,Age must be less than 12 to register as a kid");
+		}
+	}
+	public void requestBook()
+	{
+		if(bookType.equals("kids"))
+		{
+			System.out.println("Book issued successfully.please return the book within 10 days");
+		}
+		else
+		{
+			System.out.println("Oops, you are allowed to take only kids books");
+		}
+	}
+}
+class AdultUsers implements LibraryUser
+{
+	int age;
+	String bookType;
+	AdultUsers(int age,String bookType)
+	{
+		this.age=age;
+		this.bookType=bookType;
+	}
+	//@override
+	public void registerAccount()
+	{
+		if(age>12)
+		{
+			System.out.println("You have successfully registered under a Adult Account");
+		}
+		else
+		{
+			System.out.println("Sorry,Age must be greater than 12 to register as an adult");
+		}
+	}
+	public void requestBook()
+	{
+		if(bookType.equals("Fiction"))
+		{
+			System.out.println("Book issued successfully.please return the book within 7 days");
+		}
+		else
+		{
+			System.out.println("Oops, you are allowed to take only adult fiction books");
+		}
+	}
+}
+
+public class Inter 
+{
+    public static void main(String[] args)
+    {
+    	Scanner scan=new Scanner(System.in);
+    	int age=scan.nextInt();
+    	String bookType=scan.next();
+    	KidUsers kid=new KidUsers(age,bookType);
+    	kid.registerAccount();
+    	kid.requestBook();
+    	AdultUsers adult=new AdultUsers(age,bookType);
+    	adult.registerAccount();
+    	adult.requestBook();
+    }
+}

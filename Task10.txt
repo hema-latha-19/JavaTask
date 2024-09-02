@@ -1,0 +1,569 @@
+//Rain water trapping using DLL
+import java.util.*;
+class Node 
+{
+    int data;
+    Node prev;
+    Node next;
+    Node(int num)
+    {
+        data = num;
+        next = null;
+        prev = null;
+    }
+}
+public class MCET 
+{
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        Node head = null;
+        Node tail = null;
+        int num;
+        int N = 0;
+        while(true)
+        {
+            num = input.nextInt();
+            if(num == -1) break;
+            Node newnode = new Node(num);
+            if(head == null)
+                head = tail = newnode;
+            else 
+            {
+                tail.next = newnode;
+                newnode.prev = tail;
+                tail = newnode;
+            }
+            N++;
+        }
+        int[] left = new int[N];
+        int ind = 0;
+        left[ind++] = head.data;
+        Node tptr = head.next;
+        while(tptr != null)
+        {
+            left[ind] = (Math.max(left[ind-1],tptr.data));
+            ind++;
+            tptr = tptr.next;
+        }
+        int[] right = new int[N];
+        ind = N-1;
+        right[ind--] = tail.data;
+        tptr = tail.prev;
+        while(tptr != null)
+        {
+            right[ind] = Math.max(right[ind+1],tptr.data);
+            ind--;
+            tptr = tptr.prev;
+        }
+        tptr = head;
+        int sum = 0;
+        for(ind = 0 ; ind < N ; ind++)
+        {
+            sum += ((Math.min(left[ind],right[ind])) - tptr.data);
+            tptr = tptr.next;
+        }
+        System.out.println(sum);
+        input.close();
+    }
+}
+
+
+
+
+//Juspay question
+import java.util.*;
+class Node 
+{
+    int data ;
+    Node next;
+    Node(int num)
+    {
+        data = num;
+        next = null;
+    }
+}
+class Graph 
+{
+    int N;
+    Node[] head;
+    Graph(int N)
+    {
+        this.N = N;
+        head = new Node[N];
+    }
+    void cretae_graph(int src,int dest)
+    {
+        Node newnode = new Node(src);
+        if(head[dest] == null)
+            head[dest] = newnode;
+        else 
+        {
+            newnode.next = head[dest];
+            head[dest] = newnode;
+        }
+    }
+    int maxWeight()
+    {
+        int max = 0;
+        int vertex = 0;
+        for(int ind =0 ; ind < N ; ind++)
+        {
+            int sum = 0;
+            Node tptr = head[ind];
+            while(tptr != null)
+            {
+                sum+=tptr.data;
+                tptr = tptr.next;
+            }
+            if(max < sum) 
+            {
+                max = sum;
+                vertex = ind;
+            }
+        }
+        return vertex;
+    }
+}
+public class MCET 
+{
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int N = input.nextInt();
+        Graph graph = new Graph(N); 
+        int dest;
+        for(int itr = 0 ; itr < N ; itr++)
+        {
+            dest = input.nextInt();
+            if(dest != -1)
+                graph.cretae_graph(itr,dest);
+        }
+        int res = graph.maxWeight();
+        System.out.print(res);
+        input.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Binary tree creation using Queue
+import java.util.*;
+class Node 
+{
+    int data ;
+    Node left;
+    Node right;
+    Node(int num)
+    {
+        data = num;
+        left = null;
+        right = null;
+    }
+}
+class BinaryTree 
+{
+    Node root = null;
+    int N;
+    Node[] queue;
+    int front = -1;
+    int rear = -1;
+    BinaryTree(int N)
+    {
+        this.N = N;
+        queue = new Node[N];
+    }
+    void create_tree(int num)
+    {
+        Node newnode = new Node(num);
+        if(root == null)
+        {
+            root = newnode;
+            front++;
+            rear++;
+            queue[rear] = newnode;
+        }
+        else
+        {
+            if(queue[front].left == null)
+                queue[front].left = newnode;
+            else
+            {
+                queue[front].right = newnode;
+                front++;
+            }
+            queue[++rear] = newnode;
+        }
+    }
+    void inorder(Node root)
+    {
+        if(root != null)
+        {
+            inorder(root.left);
+            inorder(root.right);
+            System.out.print(root.data+" ");
+        }
+    }
+    void display()
+    {
+        inorder(root);
+    }
+}
+public class MCET 
+{
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int N = input.nextInt();
+        int num;
+        BinaryTree tree = new BinaryTree(N);
+        for(int itr = 1 ; itr <= N ; itr++)
+        {
+            num = input.nextInt();
+            tree.create_tree(num);
+        }
+        tree.display();
+        input.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Graph coloring
+import java.util.*;
+public class MCET 
+{
+    public static boolean isSafe(int N, int[][] G,int c,int[] color,int ind)
+    {
+        for(int itr = 0; itr <ind ; itr++)
+        {
+            if(G[ind][itr] == 1 && c == color[itr])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public static void Solve(int N , int[][] G,int clr,int [] color,int ind)
+    {
+        if(ind == N)
+        {
+            for(int i = 0 ; i < N ;i++)
+            {
+                System.out.print(color[i]+" ");
+            }
+            System.out.println();
+        }
+        else 
+        {
+            for(int c = 0 ; c < clr ; c++)
+            {
+                if(isSafe(N,G,c,color,ind) == true)
+                {
+                    color[ind] = c;
+                    Solve(N,G,clr,color,ind+1);
+                    color[ind] = 0;
+                }
+            }
+        }
+    }
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int N = 5;
+        int[][] G = {{0,1,1,0,0},
+                    {1,0,1,1,1},
+                    {1,1,0,1,0},
+                    {0,1,1,0,1},
+                    {0,1,0,1,0}};
+        int clr  = 4;
+        int[] color = new int[5];
+        for(int c = 0 ; c < clr ; c++)
+        {
+            color[0] = c;
+            Solve(N,G,clr,color,1);
+        }
+        input.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+//Hamiltonian cycle
+import java.util.*;
+public class MCET 
+{
+    public static int isSafe(int N, int[][] G,int[] ref,int ind,int v)
+    {
+        if(G[ref[ind-1]][v] == 0) return 0;
+        for(int itr = 0 ; itr < ind ; itr++)
+        {
+            if(ref[itr] == v) return 0;
+        }
+        return 1;
+    }
+    public static void Solve(int N, int[][] G, int[] ref,int ind)
+    {
+        if(ind == N)
+        {
+            if(G[ref[ind-1]][ref[0]] == 1)
+            {
+                for(int itr = 0 ; itr < N ;itr++)
+                {
+                    System.out.print(ref[itr]+" ");
+                }
+                System.out.println();
+            }
+        }
+        else
+        {
+            for(int v = 0 ; v < N ; v++)
+            {
+                if(isSafe(N,G,ref,ind,v)==1)
+                {
+                    ref[ind] = v;
+                    Solve(N,G,ref,ind+1);
+                    ref[ind] = 0;
+                }
+            }
+        }
+    }
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int N = 5;
+        int[][] G = {{0,1,1,0,0},
+                    {1,0,1,1,1},
+                    {1,1,0,1,0},
+                    {0,1,1,0,1},
+                    {0,1,0,1,0}};
+        int[] ref = new int[N];
+        for(int ind = 0 ; ind < N ; ind++)
+        {
+            ref[0] = ind;
+            Solve(N,G,ref,1);
+        }
+        input.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+//Height and level order traversal using recursion
+import java.util.*;
+class Node 
+{
+    int data;
+    Node right;
+    Node left;
+    Node(int data)
+    {
+        this.data = data;
+        right = null;
+        left = null;
+    }
+}
+class BST
+{
+    Node root = null;
+    void create_tree(int num)
+    {
+        Node newnode = new Node(num);
+        if(root == null)
+            root = newnode;
+        else 
+        {
+            Node temp = null;
+            for(Node tptr = root ; tptr != null ; temp = tptr, tptr = (tptr.data < num)?tptr.right:tptr.left);
+            if(temp.data < num) temp.right = newnode;
+            else temp.left = newnode;
+        }
+    }
+    int height_helper(Node root)
+    {
+        if(root == null)
+            return 0;
+        return Math.max(height_helper(root.left) , height_helper(root.right)) + 1;
+    }
+    int height()
+    {
+        return  height_helper(root);
+    }
+    void levelorder(Node root , int level)
+    {
+        if(root == null)
+            return;
+        if(level == 1)
+            System.out.print(root.data+" ");
+        else 
+        {
+            levelorder(root.left, level-1);
+            levelorder(root.right, level-1);
+        }
+    }
+    void display()
+    {
+        int h = height();
+        for(int level = 1 ; level <= h ; level++)
+        levelorder(root,level);
+    }
+}
+public class MCET 
+{
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int num;
+        BST tree = new BST();
+        while(true)
+        {
+            num = input.nextInt();
+            if(num == -1) break;
+            tree.create_tree(num);
+        }
+        tree.display();
+        input.close();
+    }
+}
+
+
+
+
+
+
+
+
+//Level order using queue
+import java.util.*;
+class Node 
+{
+    int data;
+    Node right;
+    Node left;
+    Node(int data)
+    {
+        this.data = data;
+        right = null;
+        left = null;
+    }
+}
+class QNode
+{
+    Node ref;
+    QNode next;
+    QNode(Node ref)
+    {
+        this.ref = ref;
+        next = null;
+    }
+}
+class BST
+{
+    Node root = null;
+    QNode queuef = null;
+    QNode queuer = null;
+    void create_tree(int num)
+    {
+        Node newnode = new Node(num);
+        if(root == null)
+            root = newnode;
+        else 
+        {
+            Node temp = null;
+            for(Node tptr = root ; tptr != null ; temp = tptr, tptr = (tptr.data < num)?tptr.right:tptr.left);
+            if(temp.data < num) temp.right = newnode;
+            else temp.left = newnode;
+        }
+    }
+    void levelorder(Node root)
+    {
+        QNode newnode = new QNode(root);
+        if(queuef == null)
+        {
+            System.out.print(root.data+" ");
+            queuer = queuef = newnode;
+        }
+        while(queuef != null)
+        {
+            if(queuef.ref.left != null)
+            {
+                Node temp = queuef.ref.left;
+                System.out.print(temp.data+" ");
+                newnode = new QNode(queuef.ref.left);
+                queuer = queuer.next = newnode;
+            }
+            if(queuef.ref.right != null)
+            {
+                Node temp = queuef.ref.right;
+                System.out.print(temp.data+" ");
+                newnode = new QNode(queuef.ref.right);
+                queuer = queuer.next = newnode;
+            }
+            queuef = queuef.next;
+        }
+    }
+    void display()
+    {
+        levelorder(root);
+    }
+}
+public class MCET 
+{
+    public static void main(String[] args) 
+    {
+        Scanner input = new Scanner(System.in);
+        int num;
+        BST tree = new BST();
+        while(true)
+        {
+            num = input.nextInt();
+            if(num == -1) break;
+            tree.create_tree(num);
+        }
+        tree.display();
+        input.close();
+    }
+}

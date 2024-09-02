@@ -1,0 +1,64 @@
+package DSA;
+import java.util.*;
+class Node
+{
+	int data;
+	Node next;
+	Node(int data)
+	{
+		this.data=data;
+		this.next=null;
+	}
+}
+class singlyLinkedlist
+{
+	Node head;
+	public void insert(int data)
+	{
+		 Node node=new Node(data);
+		 node.data=data;
+		 node.next=null;
+		 if(head==null)
+		 {
+			 head=node;
+		 }
+		 else
+		 {
+			 Node temp=head;
+			 while(temp.next!=null)
+			 {
+				 temp=temp.next;
+			 }
+			 temp.next=node;
+		 }
+	}
+	public void display()
+	{
+		Node node=head;
+		while(node.next!=null)
+		{
+			System.out.print(node.data+" ");
+			node=node.next;
+		}
+		System.out.print(node.data);
+	}
+}
+public class SinglyLinkedList1 
+{
+   public static void main(String[] args)
+   {
+	   singlyLinkedlist list=new singlyLinkedlist();
+//	   list.insert(5);
+//	   list.insert(10);
+//	   list.insert(45);
+//	   list.display();
+	   Scanner scan=new Scanner(System.in);
+	   int n=scan.nextInt();
+	   for(int i=0;i<n;i++)
+	   {
+		   int data=scan.nextInt();
+		   list.insert(data);
+	   }
+	   list.display();
+   }
+}
